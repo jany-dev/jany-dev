@@ -5,11 +5,23 @@ from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel
 
+from wagtail.core.fields import StreamField
+from wagtail.core import blocks
+from wagtail.admin.edit_handlers import StreamFieldPanel
+from wagtail.embeds.blocks import EmbedBlock
+
+
+body = StreamField([
+    ('heading', blocks.CharBlock(classname="full title", icon="title")),
+    ('paragraph', blocks.RichTextBlock(icon="pilcrow")),
+    ('embed', EmbedBlock(icon="media")),
+])
 
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
     content_panels = Page.content_panels + [
         FieldPanel('intro', classname="full")
+        StreamFieldPanel('body')
     ]
 
 def get_context(self, request):
@@ -28,6 +40,7 @@ class BlogPage(Page):
         FieldPanel('date'),
         FieldPanel('intro'),
         FieldPanel('body', classname="full"),
+    StreamFieldPanel('body')
     ]
 
     # in the imports
