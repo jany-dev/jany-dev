@@ -1,10 +1,118 @@
-
-
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags  wagtailimages_tags %}
 {% block content %}
-    <h1>{{ self.title }}</h1>
-    {{ page.body|richtext }}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>
+    {% block title %}
+    {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
+    {% endblock %}
+    {% block title_suffix %}
+    {% with self.get_site.site_name as site_name %}
+    {% if site_name %}- {{ site_name }}{% endif %}
+    {% endwith %}
+    {% endblock %}
+  </title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+  <!-- Tachyons CSS minified -->
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css" />
+  {# Global stylesheets #}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/mysite/static/css/mysite.css">
+  {% block extra_css %}
+  {# Override this in templates to add extra stylesheets #}
+  {% endblock %}
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
+      aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <div class="container mt-5">
+
+    {% image self.banner_image fill-1570x1000 as img %}
+
+
+
+    <div class="jumbotron " id="jumbotron"
+      style="background-image: url('{{ img.url }}'); background-size: contain; color: #fff !important">
+      <h1 class="display-4">{{ self.banner_title }}</h1>
+      <div class="lead">{{ self.banner_subtitle|richtext }}</div>
+      {% if self.banner_cta %}
+      <a class="btn btn-primary btn-lg" href="#" role="button">Read More</a>
+      {% endif %}
+    </div>
+
+
+
+    <div class="blog-posts">
+      <!--<h1>{{ page.title }}</h1>-->
+
+      <div class="intro">{{ page.intro|richtext }}</div>
+      {% for post in page.get_children %}
+      <h2>
+        <a href="{% pageurl post %}">
+          {{ post.title }}
+        </a>
+      </h2>
+      {{ post.specific.date }}
+      {% endfor %}
+    </div>
+    
+    <!---
+    <div class="blog">
+    <h1 class="blog-title">{{ page.title }}</h1></a>
+    <p class="meta">{{ page.date }}</p>
+    {% image page.image fill-320x320 %}
+    <div class="intro">{{ page.intro }}</div>
+        {{ page.body|richtext }}
+    <p><a href="{% pageurl page.get_parent %}">Return to blog</a></p>
+  </div>-->
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+</body>
+</html>
 {% endblock %}
-
-

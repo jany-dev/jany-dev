@@ -1,46 +1,43 @@
-<!--{% extends "base.html" %}
-{% load wagtailcore_tags %}
-{% block content %} -->
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/blog/static/index.css">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        
-        <div class="nav">
-            <ul>
-                <li><a href="#"> Home</a></li>
-                <li><a href="#"> Blog</a></li>
-                <li><a href="#"> About</a></li>
-                <li><a href="#"> Contact</a></li>
-        </div>
-        
+{% extends "base.html" %}
+{% load wagtailcore_tags  wagtailimages_tags %}
+{% block content %} 
 
-        
-    <h1 cla>{{ page.title }}</h1>
+
+<head>
+    <meta charset="utf-8" />
+    <title>
+      {% block title %}
+      {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
+      {% endblock %}
+      {% block title_suffix %}
+      {% with self.get_site.site_name as site_name %}
+      {% if site_name %}- {{ site_name }}{% endif %}
+      {% endwith %}
+      {% endblock %}
+    </title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <!-- Tachyons CSS minified -->
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css" />
+    {# Global stylesheets #}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/mysite/static/css/mysite.css">
+    {% block extra_css %}
+    {# Override this in templates to add extra stylesheets #}
+    {% endblock %}
+  </head>
+   
+ 
+    <h1>{{ page.title }}</h1>
     <div class="intro">{{ page.intro|richtext }}</div>
-        {% for post in blogpages %}
+        {% for post in page.get_children %}
             <h2>
                 <a href="{% pageurl post %}">
                     {{ post.title }}
                 </a>
             </h2>
-            <script src="" async defer></script>
-    </body>
-</html>
             {{ post.specific.date }}
         {% endfor %}
 {% endblock %}

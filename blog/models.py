@@ -1,15 +1,22 @@
 from django.db import models
 
 # Create your models here.
-from wagtail.core.models import Page
-from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel
+from modelcluster.fields import ParentalKey
 
-from wagtail.core.fields import StreamField
+from wagtail.admin.edit_handlers import (
+    FieldPanel,
+    MultiFieldPanel,
+    InlinePanel,
+    StreamFieldPanel,
+    PageChooserPanel,
+)
+from wagtail.core.models import Page, Orderable
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.images.edit_handlers import ImageChooserPanel
+
+
 from wagtail.core import blocks
-from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.embeds.blocks import EmbedBlock
-
 
 body = StreamField([
     ('heading', blocks.CharBlock(classname="full title", icon="title")),
@@ -17,12 +24,29 @@ body = StreamField([
     ('embed', EmbedBlock(icon="media")),
 ])
 
+class HomePageCarouselImages(Orderable):
+    """ Between 1 and 5 images for the home page carousel. """
+    page = ParentalKey("home.HomePage", related_name="carousel_images")
+    carousel_image = models.ForeignKey(
+    'wagtailimages.Image',
+    null=True,
+    blank=True,
+    on_delete=models.SET_NULL
+)
+content_panels = Page.content_panels + [
+    InlinePanel("carousel_images")
+]
+panels = [
+    ImageChooserPanel("carousel_image")
+
+]
+
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
     content_panels = Page.content_panels + [
         FieldPanel('intro', classname="full")
-        StreamFieldPanel('body')
     ]
+
 
 def get_context(self, request):
         # Update context to include only published posts,
@@ -40,11 +64,10 @@ class BlogPage(Page):
         FieldPanel('date'),
         FieldPanel('intro'),
         FieldPanel('body', classname="full"),
-    StreamFieldPanel('body')
     ]
 
     # in the imports
-from wagtail.images.edit_handlers import ImageChooserPanel
+
 
 # in your BlogPage class
 image = models.ForeignKey(
@@ -56,3 +79,4 @@ image = models.ForeignKey(
 
 # in your content_panels for BlogPage
 ImageChooserPanel('image'),
+
