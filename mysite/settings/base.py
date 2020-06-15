@@ -37,8 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'wagtailfontawesome',
-    'wagtail_blocks',
 ]
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
