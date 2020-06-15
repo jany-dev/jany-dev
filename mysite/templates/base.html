@@ -16,24 +16,23 @@
         </title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {# Global stylesheets #}
         <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
         <!-- Tachyons CSS minified -->
         <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
-        {# Global stylesheets #}
-        <link rel="stylesheet" href="https://bootswatch.com/4/simplex/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
-       
+
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
     </head>
-   
+
     <body class="{% block body_class %}{% endblock %}">
-        
         {% wagtailuserbar %}
-        
-        {% block content %}{% endblock %}
-         <!-- Navigation -->
+        <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
@@ -62,31 +61,14 @@
       </form>
     </div>
   </nav>
-  <div class="container mt-5">
 
-    {% image self.banner_image fill-1570x1000 as img %}
-
-
-
-    <div class="jumbotron " id="jumbotron"
-      style="background-image: url('{{ img.url }}'); background-size: contain; color: #fff !important">
-      <h1 class="display-4">{{ self.banner_title }}</h1>
-      <div class="lead">{{ self.banner_subtitle|richtext }}</div>
-      {% if self.banner_cta %}
-      <a class="btn btn-primary btn-lg" href="#" role="button">Read More</a>
-      {% endif %}
-    </div>
-
-   
+        <div class="container ph3 ph5-ns">
+            {% block content %}{% endblock %}
+        </div>
 
         {# Global javascript #}
-        
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
-        
+
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}
         {% endblock %}
